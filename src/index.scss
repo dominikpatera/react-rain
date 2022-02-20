@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee&family=Archivo:wght@400;500;600&display=swap');
+
+$media-sm: 640px;
+$media-md: 768px;
+$media-lg: 1024px;
+$media-xl: 1280px;
+$media-2xl: 1536px;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Archivo', sans-serif;
+  margin: 0;
+  padding: 0;
+}
