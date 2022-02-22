@@ -7,7 +7,7 @@ export const Main = styled.main<MainProps>`
     props.theme === 'dark' ? colors.darkContentBg : colors.lightContentBg};
   color: ${props =>
     props.theme === 'dark' ? colors.lightContentBg : colors.darkContentBg};
-  padding: 6rem 2rem 4rem;
+  padding: 7rem 2rem 4rem;
   min-height: calc(100vh - 4rem);
   transition: background-color 0.25s linear;
 
