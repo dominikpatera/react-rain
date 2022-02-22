@@ -11,7 +11,7 @@ const Home = () => {
   const error = locationWeather.error;
   const loading = locationWeather.loading;
 
-  const { data: locationWeatherData } = locationWeather;
+  // const { data: locationWeatherData } = locationWeather;
   const { getWeatherByCoords, getWeatherByCityName } = locationWeather.actions;
 
   // Load Weather for user's location

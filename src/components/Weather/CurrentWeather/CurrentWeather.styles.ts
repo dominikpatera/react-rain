@@ -1,2 +1,3 @@
 import styled from 'styled-components';
-import { InfoCard } from '../../Card/Card';
+
+export const StyledDiv = styled.div``;
