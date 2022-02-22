@@ -8,7 +8,7 @@ import { UserSettingsContext } from '../../../context/userSettings';
 import { media } from '../../../styles/variables.styles';
 
 const CurrentWeather: React.FC<CurrentWeatherProps> = props => {
-  const { theme } = useContext(UserSettingsContext);
+  const { theme, units } = useContext(UserSettingsContext);
   const { data } = props;
 
   if (Object.keys(data).length === 0) return <></>;
@@ -23,7 +23,9 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = props => {
         <div>Sunny</div>
       </CurrentWeatherCity>
       <CurrentWeatherTemperature>
-        <span className="temperature_now">12°C</span>
+        <span className="temperature_now">
+          12°{units === 'metric' ? 'C' : 'F'}
+        </span>
       </CurrentWeatherTemperature>
       <CurrentWeatherInfoBox className="pressure">
         <h3>Pressure</h3>
@@ -31,7 +33,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = props => {
       </CurrentWeatherInfoBox>
       <CurrentWeatherInfoBox className="visibility">
         <h3>Visibility</h3>
-        <span>3.2km</span>
+        <span>3.2{units === 'metric' ? 'km' : 'mi'}</span>
       </CurrentWeatherInfoBox>
       <CurrentWeatherInfoBox className="wind_direction" rotate={0}>
         <h3>Wind direction</h3>
@@ -56,6 +58,8 @@ const CurrentWeatherWrapper = styled.div`
     props.theme === 'dark' ? '#343434' : '#e1e1e1'};
   padding: 1rem;
   border-radius: 1rem;
+  box-shadow: -1px 3px 20px 0px rgb(114 99 99 / 46%);
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.05);
@@ -65,6 +69,10 @@ const CurrentWeatherWrapper = styled.div`
   & .city_name {
     font-size: 1.5rem;
     font-weight: 600;
+
+    @media screen and (min-width: ${media.md}) {
+      font-size: 2rem;
+    }
   }
 
   @media screen and (min-width: ${media.lg}) {
@@ -101,6 +109,9 @@ const CurrentWeatherTemperature = styled.div`
 
     &_now {
       font-size: 2rem;
+      @media screen and (min-width: ${media.md}) {
+        font-size: 2.5rem;
+      }
     }
   }
 `;
@@ -118,6 +129,11 @@ const CurrentWeatherInfoBox = styled.div<CurrentWeatherInfoBoxProps>`
   & h3 {
     margin: 0;
     font-size: 0.75rem;
+    font-weight: 1000;
+
+    @media screen and (min-width: ${media.md}) {
+      font-size: 1rem;
+    }
   }
 
   &.pressure {
