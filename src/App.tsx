@@ -8,7 +8,7 @@ import City from './routes/City';
 import Home from './routes/Home';
 
 const App = () => {
-  const { coords, setCoords } = useContext(GeolocationContext);
+  const { setCoords } = useContext(GeolocationContext);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(async position => {
