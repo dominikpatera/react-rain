@@ -32,6 +32,7 @@ export const SearchInput = styled.input`
   &:focus-visible {
     outline: none;
     border: none;
+    width: 5rem;
 
     @media screen and (min-width: ${media.sm}) {
       width: 16rem;

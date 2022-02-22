@@ -2,7 +2,6 @@ import { useContext, useEffect } from 'react';
 import CurrentWeather from '../components/Weather/CurrentWeather/CurrentWeather';
 import { GeolocationContext } from '../context/geolocation';
 import { useWeather } from '../hooks';
-import { Grid } from './Home.styles';
 
 const Home = () => {
   const { coords } = useContext(GeolocationContext);
@@ -32,11 +31,13 @@ const Home = () => {
   }
 
   return (
-    <Grid>
+    <>
+      <h3>Your location</h3>
       <CurrentWeather
         data={locationWeather.data.list ? locationWeather.data.list[0] : {}}
       />
-    </Grid>
+      <h3>Other cities</h3>
+    </>
   );
 };
 
