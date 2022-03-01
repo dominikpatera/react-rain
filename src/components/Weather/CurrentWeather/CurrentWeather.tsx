@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faLocationArrow } from '@fortawesome/free-solid-svg-icons';
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons';
 
 import {
   CurrentWeatherWrapper,
@@ -22,7 +22,10 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = props => {
       theme={theme}
     >
       <CurrentWeatherIcon>
-        <FontAwesomeIcon icon={faSun} />
+        <img
+          src={`http://openweathermap.org/img/wn/${props.icon}@2x.png`}
+          alt={props.weatherDescr}
+        />
       </CurrentWeatherIcon>
       <CurrentWeatherCity>
         <span className="city_name">{props.cityName}</span>

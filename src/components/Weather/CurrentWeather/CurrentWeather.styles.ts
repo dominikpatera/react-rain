@@ -8,6 +8,7 @@ export const CurrentWeatherWrapper = styled(Link)`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem 0.5rem;
+  width: 100%;
   transition: all 0.3s;
   background-color: ${props =>
     props.theme === 'dark' ? '#343434' : '#e1e1e1'};

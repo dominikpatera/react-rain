@@ -1,31 +1,41 @@
 import { useContext, useEffect, useState } from 'react';
+import NoFavourites from '../components/NoFavourites/NoFavourites';
 import NoLocation from '../components/NoLocation/NoLocation';
 import CurrentWeather from '../components/Weather/CurrentWeather/CurrentWeather';
+import { CitiesContext } from '../context/cities';
 import { GeolocationContext } from '../context/geolocation';
 import { useWeather } from '../hooks';
 import { Wrapper, Row } from './Home.styles';
+import FavoriteCities from '../components/FavoriteCities/FavoriteCities';
 
 const Home = () => {
-  const { coords } = useContext(GeolocationContext);
-  const locationWeather = useWeather('forecast');
-
-  const error = locationWeather.error;
-  const loading = locationWeather.loading;
   const [noCoords, setNoCoords] = useState(true);
 
-  // const { data: locationWeatherData } = locationWeather;
+  const { coords } = useContext(GeolocationContext);
+  const { cities } = useContext(CitiesContext);
+  const locationWeather = useWeather('forecast');
+  const citiesWeather = useWeather('weather');
+
+  const error = locationWeather.error || citiesWeather.error;
+  const loading = locationWeather.loading || citiesWeather.loading;
+
   const { getWeatherByCoords, getWeatherByCityName } = locationWeather.actions;
+  // const { getWeatherByCityNames } = citiesWeather.actions;
 
   // Load Weather for user's location
   useEffect(() => {
     if (coords.lat === 0 && coords.lon === 0) {
-      getWeatherByCityName('London');
       setNoCoords(true);
       return;
     }
     setNoCoords(false);
     getWeatherByCoords(coords);
   }, [getWeatherByCoords, getWeatherByCityName, coords]);
+
+  // Load weather for fav cities
+  // useEffect(() => {
+  //   if (cities.length > 0) getWeatherByCityNames(cities.map(c => c.name));
+  // }, [getWeatherByCityNames, cities]);
 
   if (loading) {
     return <>Loading...</>;
@@ -44,7 +54,7 @@ const Home = () => {
       const [curWeather] = locationWeather.data.list;
       currentWeatherMarkup = (
         <CurrentWeather
-          icon=""
+          icon={curWeather.weather[0].icon}
           cityName={locationWeather.data.city.name}
           country={locationWeather.data.city.country}
           weatherDescr={curWeather.weather[0].description}
@@ -61,7 +71,13 @@ const Home = () => {
     <Wrapper>
       <Row>{currentWeatherMarkup}</Row>
       <div>
-        <h3>Other cities</h3>
+        <h3>Your cities</h3>
+        {cities.length <= 0 && (
+          <Row>
+            <NoFavourites />
+          </Row>
+        )}
+        {cities.length > 0 && <FavoriteCities />}
       </div>
     </Wrapper>
   );

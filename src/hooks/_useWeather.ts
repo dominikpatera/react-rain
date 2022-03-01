@@ -28,7 +28,7 @@ import { UserSettingsContext } from '../context/userSettings';
 export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
   const { units } = useContext(UserSettingsContext);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<any | any[]>({});
   const [error, setError] = useState<string | boolean>(false);
 
   /**
@@ -40,13 +40,13 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
    */
   const getWeather = useCallback(
     async (type: GetWeatherTypes, options: GetWeatherOptions) => {
+      setError(false);
       // Creating url for API call
       const url = `${process.env.REACT_APP_OPENWEATHER_URL}${typeOfData}?${
         type === 'coords'
           ? `lat=${options!.coords!.lat}&lon=${options!.coords!.lon}`
           : `q=${options.cityName}`
       }&units=${units}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
-
       setLoading(true);
 
       try {
@@ -57,6 +57,8 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
           );
 
         setLoading(false);
+        if (options.data === 'push') return response.data;
+
         setData(response.data);
       } catch (err: unknown) {
         setLoading(false);
@@ -73,11 +75,10 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
    * Returns a weather data by coords
    *
    * @param {GetWeatherCoords} coords - Coordinates of place for which we wants to fetch a weather
-   * @returns {(type:GetWeatherTypes, options: GetWeatherOptions) => Object}
    */
   const getWeatherByCoords = useCallback(
     (coords: GetWeatherCoords) => {
-      getWeather('coords', { coords });
+      getWeather('coords', { coords, data: 'replace' });
     },
     [getWeather]
   );
@@ -85,11 +86,27 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
    * Returns a weather data by City Name
    *
    * @param {string} cityName - City name of place for which we wants to fetch a weather
-   * @returns {(type:GetWeatherTypes, options: GetWeatherOptions) => Object}
    */
   const getWeatherByCityName = useCallback(
     (cityName: string) => {
-      getWeather('city_name', { cityName });
+      getWeather('city_name', { cityName, data: 'replace' });
+    },
+    [getWeather]
+  );
+
+  /**
+   * Returns a weather data by City Name
+   *
+   * @param {string[]} cityNames - City name of place for which we wants to fetch a weather
+   */
+  const getWeatherByCityNames = useCallback(
+    async (cityNames: string[]) => {
+      const res = await Promise.all(
+        cityNames.map(cityn =>
+          getWeather('city_name', { cityName: cityn, data: 'push' })
+        )
+      );
+      setData(res);
     },
     [getWeather]
   );
@@ -101,6 +118,7 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
     actions: {
       getWeatherByCoords,
       getWeatherByCityName,
+      getWeatherByCityNames,
     },
   };
 };
