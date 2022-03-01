@@ -1,13 +1,11 @@
 import axios from 'axios';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   GetWeatherCoords,
   GetWeatherDataTypes,
   GetWeatherOptions,
   GetWeatherTypes,
 } from '../types/useWeather.types';
-
-import { UserSettingsContext } from '../context/userSettings';
 
 /**
  * @typedef {Object} UseHookActions
@@ -26,7 +24,6 @@ import { UserSettingsContext } from '../context/userSettings';
  * @returns {UseHook}
  */
 export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
-  const { units } = useContext(UserSettingsContext);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any | any[]>({});
   const [error, setError] = useState<string | boolean>(false);
@@ -46,7 +43,7 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
         type === 'coords'
           ? `lat=${options!.coords!.lat}&lon=${options!.coords!.lon}`
           : `q=${options.cityName}`
-      }&units=${units}&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
+      }&units=imperial&appid=${process.env.REACT_APP_OPENWEATHER_API_KEY}`;
       setLoading(true);
 
       try {
@@ -68,7 +65,7 @@ export const useWeather = (typeOfData: GetWeatherDataTypes = 'weather') => {
         setData({});
       }
     },
-    [typeOfData, units]
+    [typeOfData]
   );
 
   /**

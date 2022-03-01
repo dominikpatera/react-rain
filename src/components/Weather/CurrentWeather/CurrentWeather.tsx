@@ -11,6 +11,8 @@ import {
 import { useContext } from 'react';
 import { UserSettingsContext } from '../../../context/userSettings';
 
+import formatTemperature from '../../../actions/formatTemperature';
+
 const CurrentWeather: React.FC<CurrentWeatherProps> = props => {
   const { theme, units } = useContext(UserSettingsContext);
 
@@ -33,7 +35,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = props => {
       </CurrentWeatherCity>
       <CurrentWeatherTemperature>
         <span className="temperature_now">
-          {props.temperature}°{units === 'metric' ? 'C' : 'F'}
+          {formatTemperature(props.temperature, units)}
         </span>
       </CurrentWeatherTemperature>
       <CurrentWeatherInfoBox className="pressure">

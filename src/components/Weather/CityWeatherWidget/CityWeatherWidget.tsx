@@ -17,7 +17,7 @@ const CityWeatherWidget: React.FC<CityWeatherWidgetProps> = props => {
 type CityWeatherWidgetProps = {
   name: string;
   icon: string;
-  temperature: number;
+  temperature: string;
 };
 
 export default CityWeatherWidget;

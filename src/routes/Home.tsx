@@ -20,8 +20,6 @@ const Home = () => {
   const loading = locationWeather.loading || citiesWeather.loading;
 
   const { getWeatherByCoords, getWeatherByCityName } = locationWeather.actions;
-  // const { getWeatherByCityNames } = citiesWeather.actions;
-
   // Load Weather for user's location
   useEffect(() => {
     if (coords.lat === 0 && coords.lon === 0) {
@@ -32,10 +30,11 @@ const Home = () => {
     getWeatherByCoords(coords);
   }, [getWeatherByCoords, getWeatherByCityName, coords]);
 
+  const { getWeatherByCityNames } = citiesWeather.actions;
   // Load weather for fav cities
-  // useEffect(() => {
-  //   if (cities.length > 0) getWeatherByCityNames(cities.map(c => c.name));
-  // }, [getWeatherByCityNames, cities]);
+  useEffect(() => {
+    if (cities.length > 0) getWeatherByCityNames(cities.map(c => c.name));
+  }, [getWeatherByCityNames, cities]);
 
   if (loading) {
     return <>Loading...</>;
@@ -58,7 +57,7 @@ const Home = () => {
           cityName={locationWeather.data.city.name}
           country={locationWeather.data.city.country}
           weatherDescr={curWeather.weather[0].description}
-          temperature={Math.round(+curWeather.main.temp)}
+          temperature={+curWeather.main.temp}
           pressure={curWeather.main.pressure}
           visibility={(curWeather.visibility / 1000).toFixed(1)}
           windDirection={curWeather.wind.deg}
@@ -77,7 +76,7 @@ const Home = () => {
             <NoFavourites />
           </Row>
         )}
-        {cities.length > 0 && <FavoriteCities />}
+        {cities.length > 0 && <FavoriteCities data={citiesWeather.data} />}
       </div>
     </Wrapper>
   );

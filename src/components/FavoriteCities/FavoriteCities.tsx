@@ -1,34 +1,21 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { UserSettingsContext } from '../../context/userSettings';
 import CityWeatherWidget from '../Weather/CityWeatherWidget/CityWeatherWidget';
 
-const DUMMY_CITIES = [
-  {
-    name: 'Praha',
-    temperature: 10,
-    icon: '10n',
-  },
-  {
-    name: 'Dubaj',
-    temperature: 20,
-    icon: '01d',
-  },
-  {
-    name: 'LOL',
-    temperature: 10,
-    icon: '02n',
-  },
-];
+import formatTemperature from '../../actions/formatTemperature';
 
 const FavoriteCities: React.FC<FavoriteCitiesProps> = props => {
-  // if (Object.keys(props.data).length <= 0) return <></>;
-  // console.log(props.data);
+  const { units } = useContext(UserSettingsContext);
+  if (Object.keys(props.data).length <= 0) return <></>;
+  console.log(props.data);
   return (
     <Grid>
-      {DUMMY_CITIES.map((city: any) => (
+      {props.data.map((city: any) => (
         <CityWeatherWidget
           name={city.name}
-          icon={city.icon}
-          temperature={city.temperature}
+          icon={city.weather[0].icon}
+          temperature={formatTemperature(city.main.temp, units)}
         />
       ))}
     </Grid>
@@ -36,7 +23,7 @@ const FavoriteCities: React.FC<FavoriteCitiesProps> = props => {
 };
 
 type FavoriteCitiesProps = {
-  // data: any;
+  data: any;
 };
 
 export default FavoriteCities;
