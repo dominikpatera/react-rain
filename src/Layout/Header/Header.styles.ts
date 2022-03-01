@@ -18,7 +18,7 @@ export const StyledHeader = styled.header<StyledHeaderProps>`
   opacity: 0.97;
   color: ${props =>
     props.theme === 'dark' ? colors.lightHeaderBg : colors.darkHeaderBg};
-  box-shadow: 1px 18px 23px 5px rgba(0, 0, 0, 0.46);
+  box-shadow: rgb(0 0 0 / 46%) 1px -3px 23px 5px;
   transition: background-color 0.25s linear;
 
   @media screen and (min-width: ${media.md}) {
